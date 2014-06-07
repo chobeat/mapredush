@@ -42,27 +42,26 @@ class Document:
 
 
 #Rappresenta l'analizzatore di piu' documenti
-class DocumentAnalysis:
+class DocumentAnalysis(list):
 
-    arrayDoc = []
+
 
     #Il costruttore appende il primo documento
     def __init__(self, doc=[]):
         if isinstance(doc,list):
 		for i in doc:
-			self.appendDocument(i)
+			self.append(i)
 	else:
-		self.appendDocument(doc)
+		self.append(doc)
 
     #Aggiungiamocene di altri
-    def appendDocument(self, doc):
-        self.arrayDoc.append(doc)
 
     #Calcola IDF
     def InverseDocumentFrequency(self, word):
         counter = 0
-        nDocs = self.nDocuments()
-        for doc in self.arrayDoc:
+        nDocs = len(self)
+        for doc in self:
+
             if doc.contains(word):
                 counter += 1
         ''' DEBUG
@@ -80,8 +79,6 @@ class DocumentAnalysis:
         return tf * self.InverseDocumentFrequency(word)
 
 
-    def nDocuments(self):
-        return len(self.arrayDoc)
 
     #Calcola la CosSim a partire da due vettori di occorrenze di parole
     def cosineSimilarity(self, setDoc1, setDoc2):
@@ -129,7 +126,7 @@ doc2 = Document("cosa vuol dire nonessere? essere mah nel dubbio #gazzurbo")
 
 
 analysis = DocumentAnalysis(doc1)
-analysis.appendDocument(doc2)
+analysis.append(doc2)
 vector1 = doc1.getVectorFromList()
 vector2 = doc2.getVectorFromList()
 

@@ -32,8 +32,8 @@ class QueryDocument(Document):
         """
         tmp = []
         for qdoc in lst:
-            tmp.append(qdoc.query)
-        self.add(operator,tmp)
+            tmp.append(qdoc.getdoc())
+        self.add(operator, tmp)
 
 """
 USE CASE 1: normalcondition and complex condition

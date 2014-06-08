@@ -2,6 +2,10 @@
 import re, math
 from collections import Counter
 import string
+from faker import *
+import pprint
+from multiprocessing import Pool
+from functools import partial
 #Rappresenta un singolo documento
 class Document:
 
@@ -31,12 +35,14 @@ class Document:
     def getfreqDict(self):
         return self.freqDict
 
+    def getTF(self, word):
+	return self.freqDict[word]
     #Se una parola e' presente nel testo
     def contains(self, word):
         return word in self.freqDict
 
       #Restituisce il vettore del conteggio delle parole
-    def getVectorFromList(self):
+    def getVector(self):
         return self.wordsVector
 
 
@@ -48,13 +54,12 @@ class DocumentAnalysis(list):
 
     #Il costruttore appende il primo documento
     def __init__(self, doc=[]):
-        if isinstance(doc,list):
+
+	if isinstance(doc,list):
 		for i in doc:
 			self.append(i)
 	else:
 		self.append(doc)
-
-    #Aggiungiamocene di altri
 
     #Calcola IDF
     def InverseDocumentFrequency(self, word):
@@ -78,6 +83,14 @@ class DocumentAnalysis(list):
     def TFIDF(self, tf, word):
         return tf * self.InverseDocumentFrequency(word)
 
+    def getAllWords(self):
+	return set([word for doc in self for word in doc.getVector()])
+
+    def getIDFxWord(self):
+	return {word:self.InverseDocumentFrequency(word)   for word in self.getAllWords()}
+
+    def getAllTFIDF(self):
+	return {doc: sorted([(word,self.TFIDF(doc.getTF(word),word)) for word in doc.getVector()],key=lambda x:x[1],reverse=True) for doc in self }
 
 
     #Calcola la CosSim a partire da due vettori di occorrenze di parole
@@ -119,22 +132,34 @@ class DocumentAnalysis(list):
         except Exception:
             print "diceCoefficient: return Error"
 
+    def getSimilarityMatrix(self,f,sortByAff=True):
+	return  [(pos,self.getSimilarityVector(pos,f,sortByAff)) for pos in range(len(self))]
+
+    def getSimilarityVector(self,currPos,f,sortByAff=True):
+	curr=self[currPos]
+	k= 1 if sortByAff else 0
+
+	return sorted([(pos,f(curr.getVector(),self[pos].getVector())) for pos in range(len(self)) if pos!=currPos],key=lambda x:x[k],reverse=True)
+
+    def getDiceSimilarityMatrix(self):
+	return self.getSimilarityMatrix(self.diceCoefficient)
+
+    def getCosineSimilarityMatrix(self):
+	return self.getSimilarityMatrix(self.cosineSimilarity)
+
+
+
+'''
 
 #PROVE VARIE
-doc1 = Document("essere o nonessere?")
+doc1 = Document("essere, essere o nonessere?")
 doc2 = Document("cosa vuol dire nonessere? essere mah nel dubbio #gazzurbo")
-
-
+vector1=doc1.getVector()
+vector2=doc2.getVector()
 analysis = DocumentAnalysis(doc1)
 analysis.append(doc2)
-vector1 = doc1.getVectorFromList()
-vector2 = doc2.getVectorFromList()
 
-
-print doc1.doc
-
-print doc2.doc
-
+print analysis.getDiceSimilarityMatrix()
 
 print "IDF: " + str(analysis.InverseDocumentFrequency("essere"))
 
@@ -143,4 +168,15 @@ print "CosSim: " + str(cosSim)
 
 diceCoeff = analysis.diceCoefficient(vector1, vector2)
 print "DiceCoeff: " + str(diceCoeff)
+'''
+faker=Faker()
+pp=pprint.PrettyPrinter(indent=4)
 
+import time
+t0=time.time()
+analysis=DocumentAnalysis([Document(faker.text(140)) for i in range(1000)])
+analysis.getDiceSimilarityMatrix()
+
+t1=time.time()
+print t1-t0
+#pp.pprint(analysis.getCosineSimilarityMatrix())

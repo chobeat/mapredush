@@ -1,4 +1,6 @@
 from document import Document
+from pymongo import MongoClient
+import sys
 
 __author__ = 'civi'
 
@@ -6,55 +8,81 @@ __author__ = 'civi'
 class QueryDocument(Document):
     def __init__(self):
         Document.__init__(self)
+        self.insidedoc = dict()
 
-    def addnormalcondition(self, key, operator, condition):
-        tmp = Document()
-        tmp.add(operator, condition)
-        self.add(key, tmp)
+    def setfield(self, field):
+        self.field = field
 
-    def addcomplexcondition(self, key, opcondlist):
-        """
-        :param key: The key value
-        :param opcondlist: A list of tuples or documents (operator,condition)
-        :return: complexcondition added to the document
-        """
-        tmp = Document()
-        for k, v in opcondlist:
-            tmp.add(k, v)
-        self.add(key, tmp)
+    def addeq(self,value):
+        self.doc[self.field] = value
+
+    def addgt(self, value):
+        self.addnormaloperator("$gt", value)
+
+    def addgte(self, value):
+        self.addnormaloperator("$gte", value)
+
+    def addlt(self, value):
+        self.addnormaloperator("$lt", value)
+
+    def addlte(self, value):
+        self.addnormaloperator("$lte", value)
+
+    def addne(self, value):
+        self.addnormaloperator("$ne", value)
+
+    def addin(self,value):
+        self.addnormaloperator("$in", value)
+
+    def addnin(self,value):
+        self.addnormaloperator("$nin", value)
+
+    def addor(self, value):
+        self.addlistoperator("$or", value)
+
+    def addand(self, value):
+        self.addlistoperator("$and", value)
+
+    def addlistoperator(self,operator,value):
+        self.addnormaloperator(operator,self.docfromlist(value))
+
+    def addnormaloperator(self, operator, value):
+        self.insidedoc[operator] = value
+
+    def docfromlist(self, qdocs):
+        lst = list()
+        for qdoc in qdocs:
+            lst.append(qdoc.getdoc())
+        return lst
+
+    def getdoc(self):
+        try:
+            if self.insidedoc:
+                self.doc[self.field] = self.insidedoc
+            return self.doc
+        except AttributeError:
+            return self.insidedoc
+
+    def __str__(self):
+        return str(self.getdoc())
 
 
-    def addlistcondition(self, operator, lst):
-        """
-        :param operator: The operator ($and, $or, ...)
-        :param lst: A list of QueryDocument
-        :return: the listcondition is added to the document
-        """
-        tmp = []
-        for qdoc in lst:
-            tmp.append(qdoc.getdoc())
-        self.add(operator, tmp)
 
 """
-USE CASE 1: normalcondition and complex condition
+USE CASE:
 
-a = QueryDocument()
-a.addnormalcondition("year", "$gt", 2011)
-tmp = [("$ne", 0), ("$lte", 300)]
-a.addcomplexcondition("top_speed", tmp)
-b = QueryDocument()
-conditions = list()
-"""
+coll = MongoClient()["ginfo-exercise"]["cars"]
 
-"""
-USE CASE 2: listcondition
 c1 = QueryDocument()
-c1.addnormalcondition("year","$gt",2011)
+c1.setfield("year")
+c1.addgt(2011)
 c2 = QueryDocument()
-c2.addnormalcondition("top_speed","$lte",300)
-conditions = [c1,c2]
-b = QueryDocument()
-b.addlistcondition("$and", conditions)
-print b
+c2.setfield("top_speed")
+c2.addlte(300)
+c2.addne(0)
+
+query = QueryDocument()
+query.addand([c1,c2])
+print coll.find(query.getdoc()).count()
 
 """

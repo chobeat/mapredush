@@ -1,4 +1,6 @@
 
+#prova push
+
 class Aggregate:
     def __init__(self):
         self.pipeline = list()

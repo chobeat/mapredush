@@ -1,17 +1,34 @@
+from matchdocument import MatchDocument
+from groupdocument import GroupDocument
+from querydocument import QueryDocument
 
-#prova push
+class Aggregate(list):
 
-class Aggregate:
-    def __init__(self):
-        self.pipeline = list()
-
-    def add(self, operatordocument):
-        doc = operatordocument.getdoc()
-        self.pipeline.append(doc)
-
-    def __str__(self):
-        return str(self.pipeline)
+    def append(self, x):
+        doc = x.getdoc()
+        list.append(self, doc)
 
     def getaggregate(self):
         return self.pipeline
+
+
+"""
+USE CASE
+
+q = QueryDocument()
+q.setfield("year")
+q.addgt(2011)
+match = MatchDocument()
+match.addquerydoc(q)
+group = GroupDocument()
+group.setid("id")
+group.addsum("count",1)
+aggr = Aggregate()
+aggr.append(match)
+aggr.append(group)
+print aggr
+"""
+
+
+
 

@@ -43,8 +43,21 @@ class QueryDocument(Document):
     def addand(self, value):
         self.addlistoperator("$and", value)
 
-    def addlistoperator(self,operator,value):
-        self.addnormaloperator(operator,self.docfromlist(value))
+    def addnor(self, value):
+        self.addlistoperator("$nor", value)
+
+    def addnot(self, value):
+        self.field = value.field
+        self.addnormaloperator("$not", value.insidedoc)
+
+    def addexists(self):
+        self.addnormaloperator("$exists", True)
+
+    def addnotexists(self):
+        self.addnormaloperator("$exists", False)
+
+    def addlistoperator(self,operator, value):
+        self.addnormaloperator(operator, self.docfromlist(value))
 
     def addnormaloperator(self, operator, value):
         self.insidedoc[operator] = value
@@ -66,10 +79,8 @@ class QueryDocument(Document):
     def __str__(self):
         return str(self.getdoc())
 
-
-
 """
-USE CASE:
+USE CASE 1:
 
 coll = MongoClient()["ginfo-exercise"]["cars"]
 
@@ -86,3 +97,16 @@ query.addand([c1,c2])
 print coll.find(query.getdoc()).count()
 
 """
+
+"""
+USE CASE "NOT":
+
+c = QueryDocument()
+c.setfield("year")
+c.addgt(2011)
+query = QueryDocument()
+query.addnot(c)
+print query
+"""
+
+

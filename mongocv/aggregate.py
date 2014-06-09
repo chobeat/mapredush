@@ -8,9 +8,6 @@ class Aggregate(list):
         doc = x.getdoc()
         list.append(self, doc)
 
-    def getaggregate(self):
-        return self.pipeline
-
 
 """
 USE CASE

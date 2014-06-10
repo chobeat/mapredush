@@ -2,11 +2,9 @@ from document import Document
 
 
 class GroupDocument(Document):
-    def __init__(self):
+    def __init__(self, idfield):
         Document.__init__(self)
         self.insidedoc = Document()
-
-    def setid(self, idfield):
         if isinstance(idfield, Document):
             idfield = idfield.getdoc()
             for key in idfield:

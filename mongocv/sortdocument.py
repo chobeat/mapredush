@@ -2,6 +2,7 @@ from document import Document
 
 __author__ = 'civi'
 
+
 class SortDocument(Document):
     def __init__(self):
         Document.__init__(self)

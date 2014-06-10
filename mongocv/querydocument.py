@@ -6,15 +6,14 @@ __author__ = 'civi'
 
 
 class QueryDocument(Document):
-    def __init__(self):
+    def __init__(self, field=""):
         Document.__init__(self)
         self.insidedoc = Document()
-
-    def setfield(self, field):
-        self.field = field
+        if field!="":
+            self.field = field
 
     def addeq(self,value):
-        self.doc[self.field] = value
+        self.add(self.field, value)
 
     def addgt(self, value):
         self.addnormaloperator("$gt", value)
@@ -46,9 +45,8 @@ class QueryDocument(Document):
     def addnor(self, value):
         self.addlistoperator("$nor", value)
 
-    def addnot(self, value):
-        self.field = value.field
-        self.addnormaloperator("$not", value.insidedoc)
+    def negate(self):
+        self.insidedoc = {"$not": self.insidedoc.getdoc()}
 
     def addexists(self):
         self.addnormaloperator("$exists", True)
@@ -80,32 +78,24 @@ class QueryDocument(Document):
         return str(self.getdoc())
 
 """
-
 coll = MongoClient()["ginfo-exercise"]["cars"]
 
-c1 = QueryDocument()
-c1.setfield("year")
+c1 = QueryDocument("year")
 c1.addgt(2011)
-c2 = QueryDocument()
-c2.setfield("top_speed")
+c2 = QueryDocument("top_speed")
 c2.addlte(300)
 c2.addne(0)
 
 query = QueryDocument()
-query.addand([c1,c2])
+query.addand([c1, c2])
 print coll.find(query.getdoc()).count()
 
 """
 
 """
-USE CASE "NOT":
-
-c = QueryDocument()
-c.setfield("year")
+c = QueryDocument("year")
 c.addgt(2011)
-query = QueryDocument()
-query.addnot(c)
-print query
+c.negate()
+print c
 """
-
 

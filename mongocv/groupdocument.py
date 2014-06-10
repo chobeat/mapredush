@@ -15,7 +15,6 @@ class GroupDocument(Document):
         elif not idfield.startswith("$"):
             idfield = "$"+idfield
 
-
         self.insidedoc.add("_id", idfield)
 
     def addsum(self, key, value):

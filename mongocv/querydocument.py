@@ -8,7 +8,7 @@ __author__ = 'civi'
 class QueryDocument(Document):
     def __init__(self):
         Document.__init__(self)
-        self.insidedoc = dict()
+        self.insidedoc = Document()
 
     def setfield(self, field):
         self.field = field
@@ -60,7 +60,7 @@ class QueryDocument(Document):
         self.addnormaloperator(operator, self.docfromlist(value))
 
     def addnormaloperator(self, operator, value):
-        self.insidedoc[operator] = value
+        self.insidedoc.add(operator, value)
 
     def docfromlist(self, qdocs):
         lst = list()
@@ -71,16 +71,15 @@ class QueryDocument(Document):
     def getdoc(self):
         try:
             if self.insidedoc:
-                self.doc[self.field] = self.insidedoc
+                self.add(self.field, self.insidedoc)
             return self.doc
         except AttributeError:
-            return self.insidedoc
+            return self.insidedoc.getdoc()
 
     def __str__(self):
         return str(self.getdoc())
 
 """
-USE CASE 1:
 
 coll = MongoClient()["ginfo-exercise"]["cars"]
 

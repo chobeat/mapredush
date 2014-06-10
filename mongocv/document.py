@@ -4,11 +4,11 @@ __author__ = 'civi'
 class Document:
 
     def __init__(self):
-        self.doc = {}
+        self.doc = dict()
 
     def add(self, key, value):
         if isinstance(value, Document):
-            value = value.doc
+            value = value.getdoc()
         self.doc[key] = value
 
     def __str__(self):

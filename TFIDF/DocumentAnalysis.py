@@ -61,25 +61,41 @@ def cosineSimilarity(setDoc1, setDoc2):
 
 #Calcola la dice Coefficent a partire da due vettori di occorrenze di parole
 #In sostanza sono i termini matchanti fra 2 documenti
-def diceCoefficient(setDoc1, setDoc2, similarityfunction, *args):
+def diceCoefficient(setDoc1, setDoc2):
 
-    wordsInCommon = similarityfunction(setDoc1, setDoc2, *args)
+    wordsInCommon = exactWordInCommon(setDoc1, setDoc2)
+
     num = len(wordsInCommon)
+    den = len(setDoc1)+len(setDoc2)
+
+    try:
+        diceCoeff = 2*(float(num)/den)
+        return diceCoeff
+    except Exception:
+        return 0
+
+def diceKgramCoefficient(setDoc1, setDoc2, k, threshold):
+
+    num = 0
+    tmp = dict()
+
+    for word1 in setDoc1:
+        for word2 in setDoc2:
+            if kgramswordssimilarity(word1, word2, k) >= threshold:
+                try:
+                    tmp[(word1, word2)]
+                except KeyError:
+                    num += 1
+                    tmp[(word1, word2)] = None
+                    tmp[(word2, word1)] = None
 
     den = len(setDoc1)+len(setDoc2)
 
-    ''' debug
-    print "len1 " + str(lenDoc1)
-    print "len2 " + str(lenDoc2)
-    print "num " + str(num)
-    print "den " + str(den)
-    '''
-
-    diceCoeff = 2*(float(num)/den)
     try:
+        diceCoeff = 2*(float(num)/den)
         return diceCoeff
     except Exception:
-        print "diceCoefficient: return Error"
+        return 0
 
 class TextDocument:
 
@@ -160,19 +176,35 @@ class DocumentAnalysis(list):
 
     def getAllTFIDF(self):
         return {i: sorted([(word,self.TFIDF(self[i].getTF(word),word)) for word in self[i].getVector()],key=lambda x:x[1],reverse=True) for i in range(len(self)) }
-
-    def getDiceSimilarityMatrix(self, similarityfunction, sortByAff=True, *args):
-        print args
+"""
+    def getDiceKgramSimilarityMatrix(self, k, threshold, sortByAff=True):
         k= 1 if sortByAff else 0
-        couples=combinations(range(len(self)), 2)
-        return sorted([(i, j, diceCoefficient(self[i].getVector(), self[j].getVector(), similarityfunction, *args)) for i, j in couples], key=lambda x:x[k],reverse=True)
+        couples = combinations(range(len(self)), 2)
+        return sorted([(i, j, diceKgramCoefficient(self[i].getVector(), self[j].getVector(), k, threshold) for i, j in couples], key=lambda x:x[k],reverse=True)
+"""
+    def getDiceSimilarityMatrix(self, sortByAff=True):
+        k= 1 if sortByAff else 0
+        couples = combinations(range(len(self)), 2)
+        return sorted([(i, j, diceCoefficient(self[i].getVector(), self[j].getVector()) for i, j in couples], key=lambda x:x[k],reverse=True)
 
     def getCosineSimilarityMatrix(self, sortByAff=True):
         k= 1 if sortByAff else 0
-        couples=combinations(range(len(self)), 2)
+        couples = combinations(range(len(self)), 2)
         return sorted([(i, j, cosineSimilarity(self[i].getVector(), self[j].getVector())) for i, j in couples], key=lambda x:x[k],reverse=True)
 
+txt1 = "madonna maialona albero testicolare"
+txt2 = "madonnina maialina testicolo"
+txt3 = ""
 
+doc1 = TextDocument(txt1)
+doc2 = TextDocument(txt2)
+
+print diceKgramCoefficient(doc1.wordsVector,doc2.wordsVector,2,0.4)
+
+
+
+#da = DocumentAnalysis([doc1,doc2])
+#print da.getDiceSimilarityMatrix(kgramsimilarity, True, 2, 0.4)
 
 """
     #Calcola la CosSim a partire da due vettori di occorrenze di parole

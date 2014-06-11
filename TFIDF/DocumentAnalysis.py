@@ -124,7 +124,7 @@ class DocumentAnalysis(list):
         print "den " + str(den)
         '''
 
-        diceCoeff = float(num)/den
+        diceCoeff = 2*(float(num)/den)
         try:
             return diceCoeff
         except Exception:

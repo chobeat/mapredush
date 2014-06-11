@@ -7,6 +7,7 @@ import string
 import pprint
 from multiprocessing import Pool
 from functools import partial
+from itertools import combinations
 #Rappresenta un singolo documento
 
 
@@ -125,7 +126,7 @@ class DocumentAnalysis(list):
 
     #Il costruttore appende il primo documento
     def __init__(self, doc=[]):
-    
+
         if isinstance(doc, list):
             for i in doc:
                 self.append(i)
@@ -162,8 +163,22 @@ class DocumentAnalysis(list):
 
     def getAllTFIDF(self):
         return {i: sorted([(word,self.TFIDF(self[i].getTF(word),word)) for word in self[i].getVector()],key=lambda x:x[1],reverse=True) for i in range(len(self)) }
+    def getSimilarityMatrix(self,f,sortByAff=True):
+        k= 1 if sortByAff else 0
+	couples=combinations(range(len(self)),2)
+
+        return sorted([(i,j,f(self[i].getVector(),self[j].getVector(),exactWordInCommon)) for i,j in couples],key=lambda x:x[k],reverse=True)
+
+    def getDiceSimilarityMatrix(self):
+        return self.getSimilarityMatrix(diceCoefficient)
+
+    def getCosineSimilarityMatrix(self):
+        return self.getSimilarityMatrix(self.cosineSimilarity)
 
 
+
+
+"""
     #Calcola la CosSim a partire da due vettori di occorrenze di parole
     def cosineSimilarity(self, setDoc1, setDoc2):
 
@@ -185,40 +200,16 @@ class DocumentAnalysis(list):
     #In sostanza sono i termini matchanti fra 2 documenti
     def diceCoefficient(self, setDoc1, setDoc2):
         wordsInCommon = set(setDoc1.keys()) & set(setDoc2.keys())
-        num = len(wordsInCommon)
-        lenDoc1 = sum([value for value in setDoc1.values()])
-        lenDoc2 = sum([value for value in setDoc2.values()])
-        den = lenDoc1+lenDoc2
 
-        ''' debug
-        print "len1 " + str(lenDoc1)
-        print "len2 " + str(lenDoc2)
-        print "num " + str(num)
-        print "den " + str(den)
-        '''
+	num = len(wordsInCommon)
+        den = len(setDoc1)+len(setDoc2)
 
-        diceCoeff = 2*(float(num)/den)
+ 	diceCoeff = 2*(float(num)/den)
         try:
             return diceCoeff
         except Exception:
             print "diceCoefficient: return Error"
-
-    def getSimilarityMatrix(self,f,sortByAff=True):
-        return  [(pos,self.getSimilarityVector(pos,f,sortByAff)) for pos in range(len(self))]
-
-    def getSimilarityVector(self,currPos,f,sortByAff=True):
-        curr=self[currPos]
-        k= 1 if sortByAff else 0
-        return sorted([(pos,f(curr.getVector(),self[pos].getVector())) for pos in range(len(self)) if pos!=currPos],key=lambda x:x[k],reverse=True)
-
-    def getDiceSimilarityMatrix(self):
-        return self.getSimilarityMatrix(diceCoefficient)
-
-    def getCosineSimilarityMatrix(self):
-        return self.getSimilarityMatrix(cosineSimilarity)
-
-
-
+"""
 
 
 """
@@ -270,3 +261,4 @@ t1=time.time()
 print t1-t0
 #pp.pprint(analysis.getCosineSimilarityMatrix())
 """
+

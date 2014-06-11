@@ -67,9 +67,7 @@ def diceCoefficient(setDoc1, setDoc2, similarityfunction, *args):
     wordsInCommon = similarityfunction(setDoc1, setDoc2, *args)
     num = len(wordsInCommon)
 
-    lenDoc1 = sum([value for value in setDoc1.values()])
-    lenDoc2 = sum([value for value in setDoc2.values()])
-    den = lenDoc1+lenDoc2
+    den = len(setDoc1)+len(setDoc2)
 
     ''' debug
     print "len1 " + str(lenDoc1)
@@ -182,9 +180,9 @@ text2 = "Spisellami sta fava, mangiateli tu! Integro."
 doc1 = TextDocument(text1)
 doc2 = TextDocument(text2)
 
-print diceCoefficient(doc1.wordsVector, doc2.wordsVector, kgramsimilarity, 3, 0.3)
-
+print diceCoefficient(doc1.wordsVector, doc2.wordsVector, kgramsimilarity, 2, 0.4)
 """
+
 """
 lst = DocumentAnalysis([doc1, doc2, doc3])
 lst.InverseDocumentFrequency("essere")

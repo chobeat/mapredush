@@ -31,7 +31,6 @@ class TextDocument:
 
         self.freqDict = {word: self.wordsVector[word]/float(self.nwords) for word in self.wordsVector}
 
-
     #Restituisce il dizionario delle frequenze
     def getfreqDict(self):
         return self.freqDict
@@ -41,7 +40,7 @@ class TextDocument:
 
     #Se una parola e' presente nel testo
     def contains(self, word):
-        return word in self.freqDict
+        return word in self.wordsVector
 
       #Restituisce il vettore del conteggio delle parole
     def getVector(self):
@@ -64,17 +63,12 @@ class DocumentAnalysis(list):
     def InverseDocumentFrequency(self, word):
         counter = 0
         nDocs = len(self)
-        for doc in self:
 
-            if doc.contains(word):
+        for document in self:
+            if document.contains(word):
                 counter += 1
-        ''' DEBUG
-        print "nDocs: " + str(nDocs)
-        print "counter: " + str(counter)
-        '''
-
         try:
-            return float(nDocs / counter)
+            return float(nDocs) / counter
         except ZeroDivisionError:
             return 0
 
@@ -89,7 +83,7 @@ class DocumentAnalysis(list):
         return {word:self.InverseDocumentFrequency(word)   for word in self.getAllWords()}
 
     def getAllTFIDF(self):
-        return {doc: sorted([(word,self.TFIDF(doc.getTF(word),word)) for word in doc.getVector()],key=lambda x:x[1],reverse=True) for doc in self }
+        return {doc: sorted([(word, self.TFIDF(doc.getTF(word), word)) for word in doc.getVector()],key=lambda x:x[1],reverse=True) for doc in self }
 
 
     #Calcola la CosSim a partire da due vettori di occorrenze di parole
@@ -146,10 +140,15 @@ class DocumentAnalysis(list):
         return self.getSimilarityMatrix(self.cosineSimilarity)
 
 
-text = "Non voglio essere capito. Voglio essere, capito?"
-doc = TextDocument(text)
+text1 = "Non voglio essere capito. Voglio essere, capito?"
+text2 = "Sono Toscano e voglio il cazzo. Ed essere capito."
+text3 = "Io che sono Toscano non capisco un cazzo."
+doc1 = TextDocument(text1)
+doc2 = TextDocument(text2)
+doc3 = TextDocument(text3)
 
-
+lst = DocumentAnalysis([doc1, doc2, doc3])
+lst.InverseDocumentFrequency("essere")
 
 
 '''

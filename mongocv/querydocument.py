@@ -1,16 +1,18 @@
 from document import Document
 from pymongo import MongoClient
 import sys
+from anddocument import AndDocument
+from ordocument import OrDocument
+from nordocument import NorDocument
 
 __author__ = 'civi'
 
 
 class QueryDocument(Document):
-    def __init__(self, field=""):
+    def __init__(self, field):
         Document.__init__(self)
         self.insidedoc = Document()
-        if field!="":
-            self.field = field
+        self.field = field
 
     def addeq(self,value):
         self.add(self.field, value)
@@ -36,15 +38,6 @@ class QueryDocument(Document):
     def addnin(self,value):
         self.addnormaloperator("$nin", value)
 
-    def addor(self, value):
-        self.addlistoperator("$or", value)
-
-    def addand(self, value):
-        self.addlistoperator("$and", value)
-
-    def addnor(self, value):
-        self.addlistoperator("$nor", value)
-
     def negate(self):
         self.insidedoc = {"$not": self.insidedoc.getdoc()}
 
@@ -54,17 +47,8 @@ class QueryDocument(Document):
     def addnotexists(self):
         self.addnormaloperator("$exists", False)
 
-    def addlistoperator(self,operator, value):
-        self.addnormaloperator(operator, self.docfromlist(value))
-
     def addnormaloperator(self, operator, value):
         self.insidedoc.add(operator, value)
-
-    def docfromlist(self, qdocs):
-        lst = list()
-        for qdoc in qdocs:
-            lst.append(qdoc.getdoc())
-        return lst
 
     def getdoc(self):
         try:
@@ -86,10 +70,9 @@ c2 = QueryDocument("top_speed")
 c2.addlte(300)
 c2.addne(0)
 
-query = QueryDocument()
-query.addand([c1, c2])
-print coll.find(query.getdoc()).count()
-
+query = AndDocument([c1, c2])
+print query
+#print coll.find(query.getdoc()).count()
 """
 
 """

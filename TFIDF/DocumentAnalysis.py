@@ -43,12 +43,9 @@ def kgramsimilarity(setDoc1, setDoc2, k, threshold):
 #Calcola la CosSim a partire da due vettori di occorrenze di parole
 def cosineSimilarity(setDoc1, setDoc2):
 
-
         #Considero le parole in comune
         wordsInCommon = exactWordInCommon(setDoc1, setDoc2)
-        print wordsInCommon
 
-        print setDoc1
         num = sum([setDoc1[value] * setDoc2[value] for value in wordsInCommon])
 
         #somme al quadrato
@@ -134,7 +131,7 @@ class DocumentAnalysis(list):
             self.append(doc)
 
 
-	self.allWords=self.getAllWords()
+        self.allWords=self.getAllWords()
 
 
     #Calcola IDF
@@ -159,22 +156,21 @@ class DocumentAnalysis(list):
         return set([word for doc in self for word in doc.getVector()])
 
     def getIDFxWord(self):
-        return {word:self.InverseDocumentFrequency(word)   for word in self.getAllWords()}
+        return {word:self.InverseDocumentFrequency(word) for word in self.getAllWords()}
 
     def getAllTFIDF(self):
         return {i: sorted([(word,self.TFIDF(self[i].getTF(word),word)) for word in self[i].getVector()],key=lambda x:x[1],reverse=True) for i in range(len(self)) }
-    def getSimilarityMatrix(self,f,sortByAff=True):
+
+    def getDiceSimilarityMatrix(self, similarityfunction, sortByAff=True, *args):
+        print args
         k= 1 if sortByAff else 0
-	couples=combinations(range(len(self)),2)
+        couples=combinations(range(len(self)), 2)
+        return sorted([(i, j, diceCoefficient(self[i].getVector(), self[j].getVector(), similarityfunction, *args)) for i, j in couples], key=lambda x:x[k],reverse=True)
 
-        return sorted([(i,j,f(self[i].getVector(),self[j].getVector(),exactWordInCommon)) for i,j in couples],key=lambda x:x[k],reverse=True)
-
-    def getDiceSimilarityMatrix(self):
-        return self.getSimilarityMatrix(diceCoefficient)
-
-    def getCosineSimilarityMatrix(self):
-        return self.getSimilarityMatrix(self.cosineSimilarity)
-
+    def getCosineSimilarityMatrix(self, sortByAff=True):
+        k= 1 if sortByAff else 0
+        couples=combinations(range(len(self)), 2)
+        return sorted([(i, j, cosineSimilarity(self[i].getVector(), self[j].getVector())) for i, j in couples], key=lambda x:x[k],reverse=True)
 
 
 

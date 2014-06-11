@@ -1,3 +1,3 @@
 __author__ = 'Francesco'
 
-__all_ = ['DocumentAnalysis', 'MapReduce']
+__all__ = ['DocumentAnalysis', 'MapReduce']

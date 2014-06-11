@@ -1,7 +1,6 @@
 #Civi e Andre
 import re, math
 from collections import Counter
-from reportlab.lib.xmllib import TestXMLParser
 import string
 #from faker import *
 import pprint
@@ -9,6 +8,77 @@ from multiprocessing import Pool
 from functools import partial
 #Rappresenta un singolo documento
 
+
+def getkgrams(word, k):
+    return set([word[i:i+k] for i in range(len(word)-k+1)])
+
+
+def exactWordInCommon(setDoc1, setDoc2):
+    return set(setDoc1.keys()) & set(setDoc2.keys())
+
+
+def kgramswordssimilarity(word1, word2, k):
+    k1 = getkgrams(word1, k)
+    k2 = getkgrams(word2, k)
+    num = len(k1 & k2)
+    den = len(k1)+len(k2)
+    try:
+        return float(num)/den
+    except ZeroDivisionError:
+        return 0
+
+def kgramsimilarity(setDoc1, setDoc2, k, threshold):
+    res = set()
+    for word1 in setDoc1:
+        for word2 in setDoc2:
+            if kgramswordssimilarity(word1, word2, k) >= threshold:
+                res.add(word1)
+                res.add(word2)
+    return res
+
+
+#Calcola la CosSim a partire da due vettori di occorrenze di parole
+def cosineSimilarity(setDoc1, setDoc2, similarityfunction, *args):
+
+        #Considero le parole in comune
+        wordsInCommon = similarityfunction(setDoc1, setDoc2, *args)
+
+        num = sum([setDoc1[value] * setDoc2[value] for value in wordsInCommon])
+
+        #somme al quadrato
+        sumDoc1 = sum([math.pow(setDoc1[value], 2) for value in setDoc1.keys()])
+        sumDoc2 = sum([math.pow(setDoc2[value], 2) for value in setDoc2.keys()])
+        den = math.sqrt(sumDoc1) * math.sqrt(sumDoc2)
+
+        try:
+            return float(num) / den
+        except Exception:
+            return 0.0
+
+
+#Calcola la dice Coefficent a partire da due vettori di occorrenze di parole
+#In sostanza sono i termini matchanti fra 2 documenti
+def diceCoefficient(setDoc1, setDoc2, similarityfunction):
+
+    wordsInCommon = similarityfunction(setDoc1, setDoc2)
+    num = len(wordsInCommon)
+
+    lenDoc1 = sum([value for value in setDoc1.values()])
+    lenDoc2 = sum([value for value in setDoc2.values()])
+    den = lenDoc1+lenDoc2
+
+    ''' debug
+    print "len1 " + str(lenDoc1)
+    print "len2 " + str(lenDoc2)
+    print "num " + str(num)
+    print "den " + str(den)
+    '''
+
+    diceCoeff = 2*(float(num)/den)
+    try:
+        return diceCoeff
+    except Exception:
+        print "diceCoefficient: return Error"
 
 class TextDocument:
 
@@ -85,46 +155,6 @@ class DocumentAnalysis(list):
     def getAllTFIDF(self):
         return {doc: sorted([(word, self.TFIDF(doc.getTF(word), word)) for word in doc.getVector()],key=lambda x:x[1],reverse=True) for doc in self }
 
-
-    #Calcola la CosSim a partire da due vettori di occorrenze di parole
-    def cosineSimilarity(self, setDoc1, setDoc2):
-
-        #Considero le parole in comune
-        wordsInCommon = set(setDoc1.keys()) & set(setDoc2.keys())
-        num = sum([setDoc1[value] * setDoc2[value] for value in wordsInCommon])
-
-        #somme al quadrato
-        sumDoc1 = sum([math.pow(setDoc1[value], 2) for value in setDoc1.keys()])
-        sumDoc2 = sum([math.pow(setDoc2[value], 2) for value in setDoc2.keys()])
-        den = math.sqrt(sumDoc1) * math.sqrt(sumDoc2)
-
-        try:
-            return float(num) / den
-        except Exception:
-            return 0.0
-
-    #Calcola la dice Coefficent a partire da due vettori di occorrenze di parole
-    #In sostanza sono i termini matchanti fra 2 documenti
-    def diceCoefficient(self, setDoc1, setDoc2):
-        wordsInCommon = set(setDoc1.keys()) & set(setDoc2.keys())
-        num = len(wordsInCommon)
-        lenDoc1 = sum([value for value in setDoc1.values()])
-        lenDoc2 = sum([value for value in setDoc2.values()])
-        den = lenDoc1+lenDoc2
-
-        ''' debug
-        print "len1 " + str(lenDoc1)
-        print "len2 " + str(lenDoc2)
-        print "num " + str(num)
-        print "den " + str(den)
-        '''
-
-        diceCoeff = 2*(float(num)/den)
-        try:
-            return diceCoeff
-        except Exception:
-            print "diceCoefficient: return Error"
-
     def getSimilarityMatrix(self,f,sortByAff=True):
         return  [(pos,self.getSimilarityVector(pos,f,sortByAff)) for pos in range(len(self))]
 
@@ -134,22 +164,26 @@ class DocumentAnalysis(list):
         return sorted([(pos,f(curr.getVector(),self[pos].getVector())) for pos in range(len(self)) if pos!=currPos],key=lambda x:x[k],reverse=True)
 
     def getDiceSimilarityMatrix(self):
-        return self.getSimilarityMatrix(self.diceCoefficient)
+        return self.getSimilarityMatrix(diceCoefficient)
 
     def getCosineSimilarityMatrix(self):
-        return self.getSimilarityMatrix(self.cosineSimilarity)
+        return self.getSimilarityMatrix(cosineSimilarity)
 
 
-text1 = "Non voglio essere capito. Voglio essere, capito?"
-text2 = "Sono Toscano e voglio il cazzo. Ed essere capito."
-text3 = "Io che sono Toscano non capisco un cazzo."
+"""
+
+text1 = "I piselli me li mangio per intero."
+text2 = "Spisellami sta fava, mangiateli tu! Integro."
 doc1 = TextDocument(text1)
 doc2 = TextDocument(text2)
-doc3 = TextDocument(text3)
+
+print kgramsimilarity(doc1.wordsVector, doc2.wordsVector, 2, 0.2)
+
+
 
 lst = DocumentAnalysis([doc1, doc2, doc3])
 lst.InverseDocumentFrequency("essere")
-
+"""
 
 '''
 

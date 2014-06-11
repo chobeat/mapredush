@@ -175,13 +175,14 @@ class DocumentAnalysis(list):
         return {word:self.InverseDocumentFrequency(word) for word in self.getAllWords()}
 
     def getAllTFIDF(self):
-        return {i: sorted([(word,self.TFIDF(self[i].getTF(word),word)) for word in self[i].getVector()],key=lambda x:x[1],reverse=True) for i in range(len(self)) }
+        return {i: sorted([(word,self.TFIDF(self[i].getTF(word),word)) for word in self[i].getVector()],key=lambda x:x[1],reverse=True) for i in range(len(self))}
+
 """
     def getDiceKgramSimilarityMatrix(self, k, threshold, sortByAff=True):
         k= 1 if sortByAff else 0
         couples = combinations(range(len(self)), 2)
         return sorted([(i, j, diceKgramCoefficient(self[i].getVector(), self[j].getVector(), k, threshold) for i, j in couples], key=lambda x:x[k],reverse=True)
-"""
+
     def getDiceSimilarityMatrix(self, sortByAff=True):
         k= 1 if sortByAff else 0
         couples = combinations(range(len(self)), 2)
@@ -192,14 +193,15 @@ class DocumentAnalysis(list):
         couples = combinations(range(len(self)), 2)
         return sorted([(i, j, cosineSimilarity(self[i].getVector(), self[j].getVector())) for i, j in couples], key=lambda x:x[k],reverse=True)
 
-txt1 = "madonna maialona albero testicolare"
-txt2 = "madonnina maialina testicolo"
-txt3 = ""
+"""
+
+txt1 = "Questo documento parla di quanto la madonna sia zozza"
+txt2 = "Quest'altro invece parla di quanto la madonnina sia immacolata"
 
 doc1 = TextDocument(txt1)
 doc2 = TextDocument(txt2)
 
-print diceKgramCoefficient(doc1.wordsVector,doc2.wordsVector,2,0.4)
+print cosineSimilarity(doc1.wordsVector,doc2.wordsVector)
 
 
 

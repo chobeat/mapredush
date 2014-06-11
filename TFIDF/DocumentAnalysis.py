@@ -39,11 +39,14 @@ def kgramsimilarity(setDoc1, setDoc2, k, threshold):
 
 
 #Calcola la CosSim a partire da due vettori di occorrenze di parole
-def cosineSimilarity(setDoc1, setDoc2, similarityfunction, *args):
+def cosineSimilarity(setDoc1, setDoc2):
+
 
         #Considero le parole in comune
-        wordsInCommon = similarityfunction(setDoc1, setDoc2, *args)
+        wordsInCommon = exactWordInCommon(setDoc1, setDoc2)
+        print wordsInCommon
 
+        print setDoc1
         num = sum([setDoc1[value] * setDoc2[value] for value in wordsInCommon])
 
         #somme al quadrato
@@ -59,9 +62,9 @@ def cosineSimilarity(setDoc1, setDoc2, similarityfunction, *args):
 
 #Calcola la dice Coefficent a partire da due vettori di occorrenze di parole
 #In sostanza sono i termini matchanti fra 2 documenti
-def diceCoefficient(setDoc1, setDoc2, similarityfunction):
+def diceCoefficient(setDoc1, setDoc2, similarityfunction, *args):
 
-    wordsInCommon = similarityfunction(setDoc1, setDoc2)
+    wordsInCommon = similarityfunction(setDoc1, setDoc2, *args)
     num = len(wordsInCommon)
 
     lenDoc1 = sum([value for value in setDoc1.values()])
@@ -173,15 +176,15 @@ class DocumentAnalysis(list):
 
 
 
-
+"""
 text1 = "I piselli me li mangio per intero."
 text2 = "Spisellami sta fava, mangiateli tu! Integro."
 doc1 = TextDocument(text1)
 doc2 = TextDocument(text2)
 
-print kgramsimilarity(doc1.wordsVector, doc2.wordsVector, 2, 0.4)
+print diceCoefficient(doc1.wordsVector, doc2.wordsVector, kgramsimilarity, 3, 0.3)
 
-
+"""
 """
 lst = DocumentAnalysis([doc1, doc2, doc3])
 lst.InverseDocumentFrequency("essere")

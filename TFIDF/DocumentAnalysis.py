@@ -1,7 +1,7 @@
 #Civi e Andre
 import re, math
 from collections import Counter
-from reportlab.lib.xmllib import TestXMLParser
+
 import string
 #from faker import *
 import pprint
@@ -30,8 +30,6 @@ class TextDocument:
         self.wordsVector = Counter(tempList)
 
         self.freqDict = {word: self.wordsVector[word]/float(self.nwords) for word in self.wordsVector}
-
-
     #Restituisce il dizionario delle frequenze
     def getfreqDict(self):
         return self.freqDict
@@ -53,12 +51,15 @@ class DocumentAnalysis(list):
 
     #Il costruttore appende il primo documento
     def __init__(self, doc=[]):
-
-        if isinstance(doc, list):
+	if isinstance(doc, list):
             for i in doc:
                 self.append(i)
         else:
             self.append(doc)
+
+
+	self.allWords=self.getAllWords()
+
 
     #Calcola IDF
     def InverseDocumentFrequency(self, word):
@@ -83,13 +84,14 @@ class DocumentAnalysis(list):
         return tf * self.InverseDocumentFrequency(word)
 
     def getAllWords(self):
+
         return set([word for doc in self for word in doc.getVector()])
 
     def getIDFxWord(self):
         return {word:self.InverseDocumentFrequency(word)   for word in self.getAllWords()}
 
     def getAllTFIDF(self):
-        return {doc: sorted([(word,self.TFIDF(doc.getTF(word),word)) for word in doc.getVector()],key=lambda x:x[1],reverse=True) for doc in self }
+        return {i: sorted([(word,self.TFIDF(self[i].getTF(word),word)) for word in self[i].getVector()],key=lambda x:x[1],reverse=True) for i in range(len(self)) }
 
 
     #Calcola la CosSim a partire da due vettori di occorrenze di parole
@@ -146,11 +148,6 @@ class DocumentAnalysis(list):
         return self.getSimilarityMatrix(self.cosineSimilarity)
 
 
-text = "Non voglio essere capito. Voglio essere, capito?"
-doc = TextDocument(text)
-
-
-
 
 '''
 
@@ -173,15 +170,17 @@ diceCoeff = analysis.diceCoefficient(vector1, vector2)
 print "DiceCoeff: " + str(diceCoeff)
 '''
 """
+from faker import Faker
 faker=Faker()
 pp=pprint.PrettyPrinter(indent=4)
 
 import time
 t0=time.time()
-analysis=DocumentAnalysis([Document(faker.text(140)) for i in range(1000)])
-analysis.getDiceSimilarityMatrix()
-
+analysis=DocumentAnalysis([TextDocument(faker.text(140)) for i in range(1000)])
+print analysis.getAllTFIDF()[0]
 t1=time.time()
 print t1-t0
 #pp.pprint(analysis.getCosineSimilarityMatrix())
 """
+
+

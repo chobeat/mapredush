@@ -13,7 +13,7 @@ from mongocv.aggregate import Aggregate
 from mongocv.document import Document
 import json
 
-coll = MongoClient()['carsDB']['carsColl']
+coll = MongoClient()['ginfo-exercise']['cars']
 agg = Aggregate()
 doc = Document()
 

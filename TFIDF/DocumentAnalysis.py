@@ -1,6 +1,7 @@
 #Civi e Andre
 import re, math
 from collections import Counter
+from reportlab.lib.xmllib import TestXMLParser
 import string
 #from faker import *
 import pprint
@@ -9,27 +10,27 @@ from functools import partial
 #Rappresenta un singolo documento
 
 
-class Document:
+class TextDocument:
 
     #TODO migliorare la regex
     #Costruttore, crea il dizionario delle parole di un testo, crea il dizionario delle occorrenze e delle frequenze
     def __init__(self, doc):
         self.doc = doc
         self.freqDict = dict()
+        self.wordsVector = dict()
 
         #tempList = re.findall("([a-z]+)", doc.lower())
 
         valid_chars = " %s%s" % (string.ascii_letters, string.digits)
-        doc = ''.join(c for c in doc if c in valid_chars)
+        doc = ''.join(c.lower() for c in doc if c in valid_chars)
         tempList = doc.split(" ")
 
-        self.nwords = float(len(tempList))
-
-        for word in tempList:
-            if word not in self.freqDict:
-                self.freqDict[word] = tempList.count(word)/self.nwords
+        self.nwords = len(tempList)
 
         self.wordsVector = Counter(tempList)
+
+        self.freqDict = {word: self.wordsVector[word]/float(self.nwords) for word in self.wordsVector}
+
 
     #Restituisce il dizionario delle frequenze
     def getfreqDict(self):
@@ -145,12 +146,17 @@ class DocumentAnalysis(list):
         return self.getSimilarityMatrix(self.cosineSimilarity)
 
 
+text = "Non voglio essere capito. Voglio essere, capito?"
+doc = TextDocument(text)
+
+
+
 
 '''
 
 #PROVE VARIE
-doc1 = Document("essere, essere o nonessere?")
-doc2 = Document("cosa vuol dire nonessere? essere mah nel dubbio #gazzurbo")
+doc1 = TextDocument("essere, essere o nonessere?")
+doc2 = TextDocument("cosa vuol dire nonessere? essere mah nel dubbio #gazzurbo")
 vector1=doc1.getVector()
 vector2=doc2.getVector()
 analysis = DocumentAnalysis(doc1)

@@ -20,8 +20,9 @@ def exactWordInCommon(setDoc1, setDoc2):
 def kgramswordssimilarity(word1, word2, k):
     k1 = getkgrams(word1, k)
     k2 = getkgrams(word2, k)
+
     num = len(k1 & k2)
-    den = len(k1)+len(k2)
+    den = len(k1 | k2)
     try:
         return float(num)/den
     except ZeroDivisionError:
@@ -170,20 +171,23 @@ class DocumentAnalysis(list):
         return self.getSimilarityMatrix(cosineSimilarity)
 
 
-"""
+
+
 
 text1 = "I piselli me li mangio per intero."
 text2 = "Spisellami sta fava, mangiateli tu! Integro."
 doc1 = TextDocument(text1)
 doc2 = TextDocument(text2)
 
-print kgramsimilarity(doc1.wordsVector, doc2.wordsVector, 2, 0.2)
+print kgramsimilarity(doc1.wordsVector, doc2.wordsVector, 2, 0.4)
 
 
-
+"""
 lst = DocumentAnalysis([doc1, doc2, doc3])
 lst.InverseDocumentFrequency("essere")
 """
+
+
 
 '''
 

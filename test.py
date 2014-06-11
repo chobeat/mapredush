@@ -1,5 +1,7 @@
 from mongocv.groupdocument import GroupDocument
+from mongocv.limitdocument import LimitDocument
 from mongocv.outdocument import OutDocument
+from mongocv.sortdocument import SortDocument
 
 __author__ = 'Francesco'
 
@@ -29,11 +31,18 @@ doc2.add('numberOfProducedModels', 'numberOfProducedModels')
 group2 = GroupDocument(doc2)
 group2.addpush('makers', '_id.make')
 
-out = OutDocument('outcollpycharm')
+sort = SortDocument()
+limit = LimitDocument(10)
+sort.addfield('_id.numberOfProducedModels')
+
+out = OutDocument('outcollpycharmsortedlimit')
 
 agg.append(group1)
 agg.append(group2)
+agg.append(limit)
+agg.append(sort)
 agg.append(out)
+
 
 print agg
 

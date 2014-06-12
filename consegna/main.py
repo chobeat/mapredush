@@ -43,12 +43,10 @@ def tweetid2words(tweetid):
     result = res["result"]
 
     if len(result)==0:
-        print "Tweet ID non valido"
-        return []
-
-    words = result[0]["words"]
+	print "Tweet ID non valido"
+	return []
+    words=result[0]["words"]
     return words
-
 
 def getfreqdict(words):
     den = len(words)
@@ -56,11 +54,9 @@ def getfreqdict(words):
     freqdict = {word: wordsVector[word]/float(den) for word in wordsVector}
     return freqdict
 
-
 def tweetid2freqdict(tweetid):
     words = tweetid2words(tweetid)
     return getfreqdict(words)
-
 
 def tfidf(tweetid):
     res = dict()
@@ -73,6 +69,7 @@ def tfidf(tweetid):
         res[word] = tf[word]*idf
     return res
 
+if __name__=="__main__":
 
 def cosineSimilarity(tweetID1, tweetID2):
     words1 = tfidf(tweetID1)

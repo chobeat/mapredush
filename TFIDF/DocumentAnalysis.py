@@ -89,7 +89,7 @@ def diceKgramCoefficient(setDoc1, setDoc2, k, threshold):
                     tmp[(word1, word2)] = None
                     tmp[(word2, word1)] = None
 
-    print tmp
+
 
     den = len(setDoc1)+len(setDoc2)
 
@@ -181,20 +181,23 @@ class DocumentAnalysis(list):
     def getAllTFIDF(self):
         return {i: sorted([(word, self.TFIDF(self[i].getTF(word), word)) for word in self[i].getVector()],key=lambda x:x[1],reverse=True) for i in range(len(self))}
 
-    def getDiceKgramSimilarityMatrix(self, k, threshold, sortByAff=True):
-        k= 1 if sortByAff else 0
-        couples = combinations(range(len(self)), 2)
-        return sorted([(i, j, diceKgramCoefficient(self[i].getVector(), self[j].getVector(), k, threshold)) for i, j in couples], key=lambda x:x[k],reverse=True)
+    def getDiceKGramSimilarityMatrix(self, *args,**kwargs):
 
-    def getDiceSimilarityMatrix(self, sortByAff=True):
-        k= 1 if sortByAff else 0
-        couples = combinations(range(len(self)), 2)
-        return sorted([(i, j, diceCoefficient(self[i].getVector(), self[j].getVector())) for i, j in couples], key=lambda x:x[k],reverse=True)
+	return self.getSimilarityMatrix(diceKgramCoefficient, *args,**kwargs)
 
-    def getCosineSimilarityMatrix(self, sortByAff=True):
-        k= 1 if sortByAff else 0
+
+
+    def getDiceSimilarityMatrix(self, *args,**kwargs):
+	return self.getSimilarityMatrix(diceCoefficient, *args,**kwargs)
+
+    def getCosineSimilarityMatrix(self, *args,**kwargs):
+	return self.getSimilarityMatrix(cosineSimilarity, *args,**kwargs)
+
+    def getSimilarityMatrix(self,f,*args,**kwargs):
+
         couples = combinations(range(len(self)), 2)
-        return sorted([(i, j, cosineSimilarity(self[i].getVector(), self[j].getVector())) for i, j in couples], key=lambda x:x[k],reverse=True)
+        return [(i, j, f(self[i].getVector(), self[j].getVector(),*args,**kwargs)) for i, j in couples]
+
 
 
 txt1 = "In questo caso scrivo un punto.E scrivo una nuova frase!"
@@ -283,8 +286,8 @@ pp=pprint.PrettyPrinter(indent=4)
 
 import time
 t0=time.time()
-analysis=DocumentAnalysis([TextDocument(faker.text(140)) for i in range(1000)])
-print analysis.getAllTFIDF()[0]
+analysis=DocumentAnalysis([TextDocument(faker.text(140)) for i in range(100)])
+print analysis.getDiceKGramSimilarityMatrix(2,0.4)
 t1=time.time()
 print t1-t0
 #pp.pprint(analysis.getCosineSimilarityMatrix())

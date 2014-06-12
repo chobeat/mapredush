@@ -59,16 +59,22 @@ def tweetid2freqdict(tweetid):
     words = tweetid2words(tweetid)
     return getfreqdict(words)
 
+memotfidf={}
 def tfidf(tweetid):
-    res = dict()
-    coll = DB["wordIDF"]
-    tf = tweetid2freqdict(tweetid)
-    for word in tf:
-        query = Document()
-        query.add("_id", word)
-        idf = math.log(coll.find_one(query.getdoc())["idf"])
-        res[word] = tf[word]*idf
-    return res
+
+    try:
+	return memotfidf[tweetid]
+    except KeyError:
+        res = dict()
+        coll = DB["wordIDF"]
+        tf = tweetid2freqdict(tweetid)
+        for word in tf:
+           query = Document()
+           query.add("_id", word)
+           idf = math.log(coll.find_one(query.getdoc())["idf"])
+           res[word] = tf[word]*idf
+       	memotfidf[tweetid]=res
+        return res
 
 
 def cosineSimilarity(tweetID1, tweetID2):
@@ -128,5 +134,15 @@ def mainConsegna(args):
         return
     else:
         print functions[func](*args[2:])
+import time
+t0=time.time()
+for tweet in timeline2tweets("Pierferdinando")[:100]:
+	tfidf(tweet)
+t1=time.time()
+for tweet in timeline2tweets("Pierferdinando")[:100]:
+	tfidf(tweet)
 
-print timelineSimilarity("Pierferdinando","LegaNord2_0",0.4)
+t2=time.time()
+
+print t1-t0
+print t2-t1

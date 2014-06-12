@@ -12,6 +12,19 @@ __author__ = 'civi'
 
 DB = MongoClient()["contestDB_E"]
 
+def timeline2tweets(timeline):
+    coll = DB["texts"]
+    aggr = Aggregate()
+    query = Document()
+    query.add("timeline",timeline)
+    match = MatchDocument(query)
+    group = GroupDocument("timeline")
+    group.addpush("tweets", "textid")
+    aggr.append(match)
+    aggr.append(group.getdoc())
+    return coll.aggregate(aggr)["result"][0]["tweets"]
+
+
 def tweetid2words(tweetid):
     coll = DB["occurrences"]
     query = Document()
@@ -30,10 +43,12 @@ def tweetid2words(tweetid):
     result = res["result"]
 
     if len(result)==0:
-	print "Tweet ID non valido"
-	return []
-    words=result[0]["words"]
+        print "Tweet ID non valido"
+        return []
+
+    words = result[0]["words"]
     return words
+
 
 def getfreqdict(words):
     den = len(words)
@@ -41,9 +56,11 @@ def getfreqdict(words):
     freqdict = {word: wordsVector[word]/float(den) for word in wordsVector}
     return freqdict
 
+
 def tweetid2freqdict(tweetid):
     words = tweetid2words(tweetid)
     return getfreqdict(words)
+
 
 def tfidf(tweetid):
     res = dict()
@@ -56,13 +73,39 @@ def tfidf(tweetid):
         res[word] = tf[word]*idf
     return res
 
+
+def cosineSimilarity(tweetID1, tweetID2):
+    words1 = tfidf(tweetID1)
+    words2 = tfidf(tweetID2)
+
+    keys1 = words1.keys()
+    keys2 = words2.keys()
+
+    commonWords = set(keys1) & set(keys2)
+
+    num = sum([words1[value] * words2[value] for value in commonWords])
+
+    #somme al quadrato
+    sumDoc1 = sum([math.pow(words1[value], 2) for value in keys1])
+    sumDoc2 = sum([math.pow(words2[value], 2) for value in keys2])
+    den = math.sqrt(sumDoc1) * math.sqrt(sumDoc2)
+    result = 0
+
+    try:
+        return float(num) / den
+    except Exception:
+        return 0.0
+
+#print cosineSimilarity("276731870660673536","277893035206012928")
+
+timeline2tweets("Pierferdinando")
+
+"""
 if __name__=="__main__":
-
-	functions=[tfidf,"a","b"]
-	func=int(sys.argv[1])-1
-	if func>2 or func<0:
-		print "ID Operazione non valido"
-	else:
-		print functions[func](*sys.argv[2:])
-
-
+    functions = [tfidf, cosineSimilarity, "b"]
+    func = int(sys.argv[1])-1
+    if func>2 or func<0:
+        print "ID Operazione non valido"
+    else:
+        print functions[func](*sys.argv[2:])
+"""

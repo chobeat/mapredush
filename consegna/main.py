@@ -13,6 +13,19 @@ __author__ = 'civi'
 
 DB = MongoClient()["contestDB_E"]
 
+def timeline2tweets(timeline):
+    coll = DB["texts"]
+    aggr = Aggregate()
+    query = Document()
+    query.add("timeline",timeline)
+    match = MatchDocument(query)
+    group = GroupDocument("timeline")
+    group.addpush("tweets", "textid")
+    aggr.append(match)
+    aggr.append(group.getdoc())
+    return coll.aggregate(aggr)["result"][0]["tweets"]
+
+
 def tweetid2words(tweetid):
     coll = DB["occurrences"]
     query = Document()
@@ -31,8 +44,8 @@ def tweetid2words(tweetid):
     result = res["result"]
 
     if len(result)==0:
-	print "Tweet ID non valido"
-	return []
+        print "Tweet ID non valido"
+        return []
     words=result[0]["words"]
     return words
 
@@ -67,6 +80,7 @@ def cosineSimilarity(tweetID1, tweetID2):
     keys2 = words2.keys()
 
     commonWords = set(keys1) & set(keys2)
+
     num = sum([words1[value] * words2[value] for value in commonWords])
 
     #somme al quadrato
@@ -95,5 +109,3 @@ def mainConsegna(args):
 		return
 	else:
 		print functions[func](*args[2:])
-
-

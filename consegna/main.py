@@ -59,7 +59,10 @@ def tfidf(tweetid):
 if __name__=="__main__":
 
 	functions=[tfidf,"a","b"]
-	func=sys.argv[1]
-	print functions[int(func)-1](*sys.argv[2:])
+	func=int(sys.argv[1])-1
+	if func>2 or func<0:
+		print "ID Operazione non valido"
+	else:
+		print functions[func](*sys.argv[2:])
 
 

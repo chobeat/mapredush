@@ -69,7 +69,6 @@ def tfidf(tweetid):
         res[word] = tf[word]*idf
     return res
 
-if __name__=="__main__":
 
 def cosineSimilarity(tweetID1, tweetID2):
     words1 = tfidf(tweetID1)
@@ -96,6 +95,7 @@ def cosineSimilarity(tweetID1, tweetID2):
 #print cosineSimilarity("276731870660673536","277893035206012928")
 
 timeline2tweets("Pierferdinando")
+
 
 """
 if __name__=="__main__":

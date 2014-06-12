@@ -5,24 +5,21 @@ import json
 __author__ = 'Francesco'
 
 '''
-Un indice è ordinato di default in maniera ascendete su un certo campo. Per pecificare
+Un indice e' ordinato di default in maniera ascendete su un certo campo. Per pecificare
 l'ordine discendente si aggiunge '_' come radice del nome del campo
 '''
 class CompoundIndex:
 
-    def __init__(self):
-        self.insidedoc = OrderedDict()
-
-    def __init__(self, list):
-        self.insidedoc = OrderedDict()
-        self.addListIndex(list)
-
     def __init__(self, field):
         self.insidedoc = OrderedDict()
-        if field.startswith('_'):
-            self.addDescIndex(field)
+
+        if isinstance(field, list):
+            self.addListIndex(field)
         else:
-            self.addIndex(field)
+            if field.startswith('_'):
+                self.addDescIndex(field)
+            else:
+                self.addIndex(field)
 
     def addDescIndex(self, field):
         self.insidedoc.__setitem__(field, -1)

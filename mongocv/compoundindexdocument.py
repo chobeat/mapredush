@@ -10,16 +10,17 @@ l'ordine discendente si aggiunge '_' come radice del nome del campo
 '''
 class CompoundIndex:
 
-    def __init__(self, field):
+    def __init__(self, field=[]):
         self.insidedoc = OrderedDict()
 
-        if isinstance(field, list):
-            self.addListIndex(field)
-        else:
-            if field.startswith('_'):
-                self.addDescIndex(field)
+        if field:
+            if isinstance(field, list):
+                self.addListIndex(field)
             else:
-                self.addIndex(field)
+                if field.startswith('_'):
+                    self.addDescIndex(field)
+                else:
+                    self.addIndex(field)
 
     def addDescIndex(self, field):
         self.insidedoc.__setitem__(field, -1)
@@ -40,8 +41,18 @@ class CompoundIndex:
     def __str__(self):
         return json.dumps(self.insidedoc)
 
-
+"""
+USE CASE 1
 i = CompoundIndex(['_mannaggia', '_marca', 'anno', '_ciccio'])
 print i
 i.removeIndex('marca')
 print i
+
+USE CASE 2
+
+j = CompoundIndex()
+j.addDescIndex("indice1")
+j.addDescIndex("indice2")
+
+print j
+"""

@@ -11,4 +11,5 @@ __all__ = ["aggregate",
            "ordocument",
            "outdocument",
            "querydocument",
-           "sortdocument"]
+           "sortdocument",
+           "compoundindexdocument"]

@@ -6,6 +6,7 @@ from mongocv.matchdocument import MatchDocument
 from mongocv.outdocument import OutDocument
 from mongocv.querydocument import QueryDocument
 from mongocv.document import Document
+from inizializzatore import *
 import math
 import sys
 __author__ = 'civi'
@@ -35,6 +36,7 @@ def tweetid2words(tweetid):
     group.addpush("words", "keyword")
 
     aggr = Aggregate()
+
     aggr.append(match.getdoc())
     aggr.append(group.getdoc())
 
@@ -92,17 +94,17 @@ def cosineSimilarity(tweetID1, tweetID2):
     except Exception:
         return 0.0
 
-#print cosineSimilarity("276731870660673536","277893035206012928")
 
-timeline2tweets("Pierferdinando")
+def mainConsegna(args):
+	initDB()
+	functions=[tfidf,cosineSimilarity,"b"]
+	if len(args)<2:
+		print "Dammi un ID operazione"
+		return
+	func=int(args[1])-1
+	if func>2 or func<0:
+		print "ID Operazione non valido"
+		return
+	else:
+		print functions[func](*args[2:])
 
-
-"""
-if __name__=="__main__":
-    functions = [tfidf, cosineSimilarity, "b"]
-    func = int(sys.argv[1])-1
-    if func>2 or func<0:
-        print "ID Operazione non valido"
-    else:
-        print functions[func](*sys.argv[2:])
-"""

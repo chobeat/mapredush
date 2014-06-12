@@ -99,8 +99,24 @@ def cosineSimilarity(tweetID1, tweetID2):
     except Exception:
         return 0.0
 
-def timelineSimilarity(timeline1, timeline2, threshold):
+from itertools import combinations
+def timelineSimilarityMatrix(threshold):
+    group=GroupDocument("timeline")
+    aggr=Aggregate()
+    aggr.append(group.getdoc())
 
+    timelines=DB['texts'].aggregate(aggr)['result']
+
+    timelines = [c['_id'] for c in timelines]
+
+    couples = combinations(timelines, 2)
+
+    return [(c[0], c[1], timelineSimilarity(c[0],c[1],threshold)) for c in couples]
+
+
+
+def timelineSimilarity(timeline1, timeline2, threshold):
+    print "Calcolo", timeline1, timeline2
     listatweet1 = timeline2tweets(timeline1)
     listatweet2 = timeline2tweets(timeline2)
 
@@ -123,7 +139,8 @@ def computeDice(listatweet1, listatweet2, threshold):
 
 def mainConsegna(args):
     initDB()
-    functions=[tfidf, cosineSimilarity, "b"]
+    functions=[tfidf, cosineSimilarity, timelineSimilarityMatrix]
+
     if len(args)<2:
         print "Dammi un ID operazione"
         return
@@ -134,15 +151,4 @@ def mainConsegna(args):
         return
     else:
         print functions[func](*args[2:])
-import time
-t0=time.time()
-for tweet in timeline2tweets("Pierferdinando")[:100]:
-	tfidf(tweet)
-t1=time.time()
-for tweet in timeline2tweets("Pierferdinando")[:100]:
-	tfidf(tweet)
 
-t2=time.time()
-
-print t1-t0
-print t2-t1

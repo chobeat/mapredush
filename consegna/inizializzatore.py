@@ -18,7 +18,6 @@ def connToDB(collection):
 def initDB():
 	try:
 		db=connToDB("occurrences").database
-		print "Inizializzazione database"
 		init_IDF()
 	except CollectionInvalid:
 		pass

@@ -6,6 +6,7 @@ from mongocv.matchdocument import MatchDocument
 from mongocv.outdocument import OutDocument
 from mongocv.querydocument import QueryDocument
 from mongocv.document import Document
+from inizializzatore import *
 import math
 import sys
 __author__ = 'civi'
@@ -56,12 +57,42 @@ def tfidf(tweetid):
         res[word] = tf[word]*idf
     return res
 
-def mainConsegna(args):
 
-	functions=[tfidf,"a","b"]
+def cosineSimilarity(tweetID1, tweetID2):
+
+    words1 = tfidf(tweetID1)
+    words2 = tfidf(tweetID2)
+
+    keys1 = words1.keys()
+    keys2 = words2.keys()
+
+    commonWords = set(keys1) & set(keys2)
+    num = sum([words1[value] * words2[value] for value in commonWords])
+
+    #somme al quadrato
+    sumDoc1 = sum([math.pow(words1[value], 2) for value in keys1])
+    sumDoc2 = sum([math.pow(words2[value], 2) for value in keys2])
+    den = math.sqrt(sumDoc1) * math.sqrt(sumDoc2)
+    result = 0
+
+    try:
+        return float(num) / den
+    except Exception:
+        return 0.0
+
+
+
+
+def mainConsegna(args):
+	initDB()
+	functions=[tfidf,cosineSimilarity,"b"]
+	if len(args)<2:
+		print "Dammi un ID operazione"
+		return
 	func=int(args[1])-1
 	if func>2 or func<0:
 		print "ID Operazione non valido"
+		return
 	else:
 		print functions[func](*args[2:])
 

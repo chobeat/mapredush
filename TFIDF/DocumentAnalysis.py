@@ -89,6 +89,8 @@ def diceKgramCoefficient(setDoc1, setDoc2, k, threshold):
                     tmp[(word1, word2)] = None
                     tmp[(word2, word1)] = None
 
+    print tmp
+
     den = len(setDoc1)+len(setDoc2)
 
     try:
@@ -108,9 +110,11 @@ class TextDocument:
 
         #tempList = re.findall("([a-z]+)", doc.lower())
 
-        valid_chars = " %s%s" % (string.ascii_letters, string.digits)
-        doc = ''.join(c.lower() for c in doc if c in valid_chars)
-        tempList = doc.split(" ")
+        tempList = re.findall(r"(\w+)", doc.lower())
+
+        #valid_chars = " %s%s" % (string.ascii_letters, string.digits)
+        #doc = ''.join(c.lower() for c in doc if c in valid_chars)
+        #tempList = doc.split(" ")
 
         self.nwords = len(tempList)
 
@@ -175,38 +179,32 @@ class DocumentAnalysis(list):
         return {word:self.InverseDocumentFrequency(word) for word in self.getAllWords()}
 
     def getAllTFIDF(self):
-        return {i: sorted([(word,self.TFIDF(self[i].getTF(word),word)) for word in self[i].getVector()],key=lambda x:x[1],reverse=True) for i in range(len(self))}
+        return {i: sorted([(word, self.TFIDF(self[i].getTF(word), word)) for word in self[i].getVector()],key=lambda x:x[1],reverse=True) for i in range(len(self))}
 
-"""
     def getDiceKgramSimilarityMatrix(self, k, threshold, sortByAff=True):
         k= 1 if sortByAff else 0
         couples = combinations(range(len(self)), 2)
-        return sorted([(i, j, diceKgramCoefficient(self[i].getVector(), self[j].getVector(), k, threshold) for i, j in couples], key=lambda x:x[k],reverse=True)
+        return sorted([(i, j, diceKgramCoefficient(self[i].getVector(), self[j].getVector(), k, threshold)) for i, j in couples], key=lambda x:x[k],reverse=True)
 
     def getDiceSimilarityMatrix(self, sortByAff=True):
         k= 1 if sortByAff else 0
         couples = combinations(range(len(self)), 2)
-        return sorted([(i, j, diceCoefficient(self[i].getVector(), self[j].getVector()) for i, j in couples], key=lambda x:x[k],reverse=True)
+        return sorted([(i, j, diceCoefficient(self[i].getVector(), self[j].getVector())) for i, j in couples], key=lambda x:x[k],reverse=True)
 
     def getCosineSimilarityMatrix(self, sortByAff=True):
         k= 1 if sortByAff else 0
         couples = combinations(range(len(self)), 2)
         return sorted([(i, j, cosineSimilarity(self[i].getVector(), self[j].getVector())) for i, j in couples], key=lambda x:x[k],reverse=True)
 
-"""
 
-txt1 = "Questo documento parla di quanto la madonna sia zozza"
-txt2 = "Quest'altro invece parla di quanto la madonnina sia immacolata"
+txt1 = "In questo caso scrivo un punto.E scrivo una nuova frase!"
+txt2 = "In questi caso scriverei ma sarei fottuto."
 
 doc1 = TextDocument(txt1)
 doc2 = TextDocument(txt2)
 
-print cosineSimilarity(doc1.wordsVector,doc2.wordsVector)
+print diceKgramCoefficient(doc1.wordsVector,doc2.wordsVector,2,0.4)
 
-
-
-#da = DocumentAnalysis([doc1,doc2])
-#print da.getDiceSimilarityMatrix(kgramsimilarity, True, 2, 0.4)
 
 """
     #Calcola la CosSim a partire da due vettori di occorrenze di parole

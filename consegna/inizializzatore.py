@@ -10,6 +10,7 @@ from mongocv.document import Document
 
 DB = MongoClient()["contestDB_E"]
 
+
 def initDB():
     try:
         DB["texts"].ensureIndex({"textid":1})

@@ -97,10 +97,11 @@ def cosineSimilarity(tweetID1, tweetID2):
     try:
         return float(num) / den
     except Exception:
-        return 0.0
 
+        return 0.0
+import csv
 from itertools import combinations
-def timelineSimilarityMatrix(threshold):
+def timelineSimilarityMatrix(threshold,path):
     group=GroupDocument("timeline")
     aggr=Aggregate()
     aggr.append(group.getdoc())
@@ -110,13 +111,13 @@ def timelineSimilarityMatrix(threshold):
     timelines = [c['_id'] for c in timelines]
 
     couples = combinations(timelines, 2)
-
-    return [(c[0], c[1], timelineSimilarity(c[0],c[1],threshold)) for c in couples]
+    with open(path,'wb') as csvfile:
+	row=csv.writer(csvfile,dialect="excel-tab")
+        [row.writerow([c[0], c[1], timelineSimilarity(c[0],c[1],threshold)]) for c in couples]
 
 
 
 def timelineSimilarity(timeline1, timeline2, threshold):
-    print "Calcolo", timeline1, timeline2
     listatweet1 = timeline2tweets(timeline1)
     listatweet2 = timeline2tweets(timeline2)
 
@@ -132,7 +133,10 @@ def computeDice(listatweet1, listatweet2, threshold):
     counter = 0
     for tweet1 in listatweet1:
         for tweet2 in listatweet2:
-            if cosineSimilarity(tweet1, tweet2) >= threshold:
+	    c=cosineSimilarity(tweet1, tweet2)
+
+            if c >= float(threshold):
+
                 counter += 1
 
     return (float(2 * counter))/(len(listatweet1) + len(listatweet2))

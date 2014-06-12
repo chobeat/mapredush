@@ -56,13 +56,13 @@ def tfidf(tweetid):
         res[word] = tf[word]*idf
     return res
 
-if __name__=="__main__":
+def mainConsegna(args):
 
 	functions=[tfidf,"a","b"]
-	func=int(sys.argv[1])-1
+	func=int(args[1])-1
 	if func>2 or func<0:
 		print "ID Operazione non valido"
 	else:
-		print functions[func](*sys.argv[2:])
+		print functions[func](*args[2:])
 
 

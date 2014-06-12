@@ -22,11 +22,17 @@ def tweetid2words(tweetid):
     group.addpush("words", "keyword")
 
     aggr = Aggregate()
-    aggr.append(match)
-    aggr.append(group)
+    aggr.append(match.getdoc())
+    aggr.append(group.getdoc())
 
     res = coll.aggregate(aggr)
-    words = res["result"][0]["words"]
+
+    result = res["result"]
+
+    if len(result)==0:
+	print "Tweet ID non valido"
+	return []
+    words=result[0]["words"]
     return words
 
 def getfreqdict(words):
@@ -51,4 +57,9 @@ def tfidf(tweetid):
     return res
 
 if __name__=="__main__":
-	pass
+
+	functions=[tfidf,"a","b"]
+	func=sys.argv[1]
+	print functions[int(func)-1](*sys.argv[2:])
+
+

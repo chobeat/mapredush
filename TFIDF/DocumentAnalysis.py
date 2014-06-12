@@ -182,31 +182,18 @@ class DocumentAnalysis(list):
         return {i: sorted([(word, self.TFIDF(self[i].getTF(word), word)) for word in self[i].getVector()],key=lambda x:x[1],reverse=True) for i in range(len(self))}
 
     def getDiceKGramSimilarityMatrix(self, *args,**kwargs):
-
-	return self.getSimilarityMatrix(diceKgramCoefficient, *args,**kwargs)
-
-
+        return self.getSimilarityMatrix(diceKgramCoefficient, *args,**kwargs)
 
     def getDiceSimilarityMatrix(self, *args,**kwargs):
-	return self.getSimilarityMatrix(diceCoefficient, *args,**kwargs)
+         return self.getSimilarityMatrix(diceCoefficient, *args,**kwargs)
 
     def getCosineSimilarityMatrix(self, *args,**kwargs):
-	return self.getSimilarityMatrix(cosineSimilarity, *args,**kwargs)
+        return self.getSimilarityMatrix(cosineSimilarity, *args,**kwargs)
 
-    def getSimilarityMatrix(self,f,*args,**kwargs):
-
+    def getSimilarityMatrix(self, f, *args, **kwargs):
         couples = combinations(range(len(self)), 2)
         return [(i, j, f(self[i].getVector(), self[j].getVector(),*args,**kwargs)) for i, j in couples]
 
-
-
-txt1 = "In questo caso scrivo un punto.E scrivo una nuova frase!"
-txt2 = "In questi caso scriverei ma sarei fottuto."
-
-doc1 = TextDocument(txt1)
-doc2 = TextDocument(txt2)
-
-print diceKgramCoefficient(doc1.wordsVector,doc2.wordsVector,2,0.4)
 
 
 """

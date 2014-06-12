@@ -25,7 +25,6 @@ def timeline2tweets(timeline):
     aggr.append(group.getdoc())
     return coll.aggregate(aggr)["result"][0]["tweets"]
 
-
 def tweetid2words(tweetid):
     coll = DB["occurrences"]
     query = Document()
@@ -94,17 +93,40 @@ def cosineSimilarity(tweetID1, tweetID2):
     except Exception:
         return 0.0
 
+def timelineSimilarity(timeline1, timeline2, threshold):
+
+    listatweet1 = timeline2tweets(timeline1)
+    listatweet2 = timeline2tweets(timeline2)
+
+    if len(listatweet1) <= len(listatweet2):
+        result = computeDice(listatweet1, listatweet2, threshold)
+    else:
+        result = computeDice(listatweet2, listatweet1, threshold)
+
+    return result
+
+
+def computeDice(listatweet1, listatweet2, threshold):
+    counter = 0
+    for tweet1 in listatweet1:
+        for tweet2 in listatweet2:
+            if cosineSimilarity(tweet1, tweet2) >= threshold:
+                counter += 1
+
+    return (float(2 * counter))/(len(listatweet1) + len(listatweet2))
 
 def mainConsegna(args):
-	initDB()
-	functions=[tfidf,cosineSimilarity,"b"]
-	if len(args)<2:
-		print "Dammi un ID operazione"
-		return
-	func=int(args[1])-1
-	if func>2 or func<0:
-		print "ID Operazione non valido"
-		return
-	else:
-		print functions[func](*args[2:])
+    initDB()
+    functions=[tfidf, cosineSimilarity, "b"]
+    if len(args)<2:
+        print "Dammi un ID operazione"
+        return
 
+    func=int(args[1])-1
+    if func>2 or func<0:
+        print "ID Operazione non valido"
+        return
+    else:
+        print functions[func](*args[2:])
+
+print timelineSimilarity("Pierferdinando","LegaNord2_0",0.4)

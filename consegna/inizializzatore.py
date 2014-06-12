@@ -13,10 +13,10 @@ DB = MongoClient()["contestDB_E"]
 
 def initDB():
     try:
-        DB["texts"].ensureIndex({"textid":1})
-        DB["texts"].ensureIndex({"timeline":1})
-        DB["occurrences"].ensureIndex({"textid":1})
-        DB["occurrences"].ensureIndex({"keyword":1})
+        DB["texts"].ensure_index("textid")
+        DB["texts"].ensure_index("timeline")
+        DB["occurrences"].ensure_index("textid")
+        DB["occurrences"].ensure_index("keyword")
         init_IDF()
     except CollectionInvalid:
         pass

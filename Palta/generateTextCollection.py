@@ -3,7 +3,7 @@ from pymongo import *
 
 client=MongoClient()
 db=client.db
-tc=db['textCollection']
+tc=db['textCollection3']
 f=Faker()
 l=[f.text(140) for i in range(1000)]
 for i in range(len(l)):

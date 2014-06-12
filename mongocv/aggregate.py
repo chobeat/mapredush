@@ -2,11 +2,15 @@ from matchdocument import MatchDocument
 from groupdocument import GroupDocument
 from sortdocument import SortDocument
 from querydocument import QueryDocument
+from document import Document
 
 class Aggregate(list):
 
     def append(self, x):
-        doc = x.getdoc()
+        if isinstance(x, Document):
+            doc = x.getdoc()
+        else:
+            doc = x
         list.append(self, doc)
 
 """

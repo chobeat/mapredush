@@ -16,3 +16,5 @@ class Document:
 
     def getdoc(self):
         return self.doc
+
+

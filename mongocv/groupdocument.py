@@ -1,4 +1,4 @@
-from document import Document
+from mongocv.document import Document
 
 
 class GroupDocument(Document):

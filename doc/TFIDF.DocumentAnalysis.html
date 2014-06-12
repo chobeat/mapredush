@@ -1,0 +1,213 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module TFIDF.DocumentAnalysis</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="TFIDF.html"><font color="#ffffff">TFIDF</font></a>.DocumentAnalysis</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/chobeat/git/mapredush/TFIDF/DocumentAnalysis.py">/home/chobeat/git/mapredush/TFIDF/DocumentAnalysis.py</a></font></td></tr></table>
+    <p><tt>#Civi&nbsp;e&nbsp;Andre</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="math.html">math</a><br>
+</td><td width="25%" valign=top><a href="pprint.html">pprint</a><br>
+</td><td width="25%" valign=top><a href="re.html">re</a><br>
+</td><td width="25%" valign=top><a href="string.html">string</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="TFIDF.DocumentAnalysis.html#TextDocument">TextDocument</a>
+</font></dt><dt><font face="helvetica, arial"><a href="__builtin__.html#list">__builtin__.list</a>(<a href="__builtin__.html#object">__builtin__.object</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="TFIDF.DocumentAnalysis.html#DocumentAnalysis">DocumentAnalysis</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="DocumentAnalysis">class <strong>DocumentAnalysis</strong></a>(<a href="__builtin__.html#list">__builtin__.list</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>#Rappresenta&nbsp;l'analizzatore&nbsp;di&nbsp;piu'&nbsp;documenti<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="TFIDF.DocumentAnalysis.html#DocumentAnalysis">DocumentAnalysis</a></dd>
+<dd><a href="__builtin__.html#list">__builtin__.list</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="DocumentAnalysis-InverseDocumentFrequency"><strong>InverseDocumentFrequency</strong></a>(self, word)</dt><dd><tt>#Calcola&nbsp;IDF</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-TFIDF"><strong>TFIDF</strong></a>(self, tf, word)</dt><dd><tt>#Calcola&nbsp;TFIDF</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__init__"><strong>__init__</strong></a>(self, doc<font color="#909090">=[]</font>)</dt><dd><tt>#Il&nbsp;costruttore&nbsp;appende&nbsp;il&nbsp;primo&nbsp;documento</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-getAllTFIDF"><strong>getAllTFIDF</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="DocumentAnalysis-getAllWords"><strong>getAllWords</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="DocumentAnalysis-getCosineSimilarityMatrix"><strong>getCosineSimilarityMatrix</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="DocumentAnalysis-getDiceKGramSimilarityMatrix"><strong>getDiceKGramSimilarityMatrix</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="DocumentAnalysis-getDiceSimilarityMatrix"><strong>getDiceSimilarityMatrix</strong></a>(self, *args, **kwargs)</dt></dl>
+
+<dl><dt><a name="DocumentAnalysis-getIDFxWord"><strong>getIDFxWord</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="DocumentAnalysis-getSimilarityMatrix"><strong>getSimilarityMatrix</strong></a>(self, f, *args, **kwargs)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="__builtin__.html#list">__builtin__.list</a>:<br>
+<dl><dt><a name="DocumentAnalysis-__add__"><strong>__add__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__add__">__add__</a>(y)&nbsp;&lt;==&gt;&nbsp;x+y</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__contains__"><strong>__contains__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__contains__">__contains__</a>(y)&nbsp;&lt;==&gt;&nbsp;y&nbsp;in&nbsp;x</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__delitem__"><strong>__delitem__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__delitem__">__delitem__</a>(y)&nbsp;&lt;==&gt;&nbsp;del&nbsp;x[y]</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__delslice__"><strong>__delslice__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__delslice__">__delslice__</a>(i,&nbsp;j)&nbsp;&lt;==&gt;&nbsp;del&nbsp;x[i:j]<br>
+&nbsp;<br>
+Use&nbsp;of&nbsp;negative&nbsp;indices&nbsp;is&nbsp;not&nbsp;supported.</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__eq__"><strong>__eq__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__eq__">__eq__</a>(y)&nbsp;&lt;==&gt;&nbsp;x==y</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__ge__"><strong>__ge__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__ge__">__ge__</a>(y)&nbsp;&lt;==&gt;&nbsp;x&gt;=y</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__getitem__"><strong>__getitem__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__getitem__">__getitem__</a>(y)&nbsp;&lt;==&gt;&nbsp;x[y]</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__getslice__"><strong>__getslice__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__getslice__">__getslice__</a>(i,&nbsp;j)&nbsp;&lt;==&gt;&nbsp;x[i:j]<br>
+&nbsp;<br>
+Use&nbsp;of&nbsp;negative&nbsp;indices&nbsp;is&nbsp;not&nbsp;supported.</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__gt__"><strong>__gt__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__gt__">__gt__</a>(y)&nbsp;&lt;==&gt;&nbsp;x&gt;y</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__iadd__"><strong>__iadd__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__iadd__">__iadd__</a>(y)&nbsp;&lt;==&gt;&nbsp;x+=y</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__imul__"><strong>__imul__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__imul__">__imul__</a>(y)&nbsp;&lt;==&gt;&nbsp;x*=y</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__iter__"><strong>__iter__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__iter__">__iter__</a>()&nbsp;&lt;==&gt;&nbsp;iter(x)</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__le__"><strong>__le__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__le__">__le__</a>(y)&nbsp;&lt;==&gt;&nbsp;x&lt;=y</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__len__"><strong>__len__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__len__">__len__</a>()&nbsp;&lt;==&gt;&nbsp;len(x)</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__lt__"><strong>__lt__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__lt__">__lt__</a>(y)&nbsp;&lt;==&gt;&nbsp;x&lt;y</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__mul__"><strong>__mul__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__mul__">__mul__</a>(n)&nbsp;&lt;==&gt;&nbsp;x*n</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__ne__"><strong>__ne__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__ne__">__ne__</a>(y)&nbsp;&lt;==&gt;&nbsp;x!=y</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__repr__"><strong>__repr__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__repr__">__repr__</a>()&nbsp;&lt;==&gt;&nbsp;repr(x)</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__reversed__"><strong>__reversed__</strong></a>(...)</dt><dd><tt>L.<a href="#DocumentAnalysis-__reversed__">__reversed__</a>()&nbsp;--&nbsp;return&nbsp;a&nbsp;reverse&nbsp;iterator&nbsp;over&nbsp;the&nbsp;<a href="__builtin__.html#list">list</a></tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__rmul__"><strong>__rmul__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__rmul__">__rmul__</a>(n)&nbsp;&lt;==&gt;&nbsp;n*x</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__setitem__"><strong>__setitem__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__setitem__">__setitem__</a>(i,&nbsp;y)&nbsp;&lt;==&gt;&nbsp;x[i]=y</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__setslice__"><strong>__setslice__</strong></a>(...)</dt><dd><tt>x.<a href="#DocumentAnalysis-__setslice__">__setslice__</a>(i,&nbsp;j,&nbsp;y)&nbsp;&lt;==&gt;&nbsp;x[i:j]=y<br>
+&nbsp;<br>
+Use&nbsp;&nbsp;of&nbsp;negative&nbsp;indices&nbsp;is&nbsp;not&nbsp;supported.</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-__sizeof__"><strong>__sizeof__</strong></a>(...)</dt><dd><tt>L.<a href="#DocumentAnalysis-__sizeof__">__sizeof__</a>()&nbsp;--&nbsp;size&nbsp;of&nbsp;L&nbsp;in&nbsp;memory,&nbsp;in&nbsp;bytes</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-append"><strong>append</strong></a>(...)</dt><dd><tt>L.<a href="#DocumentAnalysis-append">append</a>(object)&nbsp;--&nbsp;append&nbsp;object&nbsp;to&nbsp;end</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-count"><strong>count</strong></a>(...)</dt><dd><tt>L.<a href="#DocumentAnalysis-count">count</a>(value)&nbsp;-&gt;&nbsp;integer&nbsp;--&nbsp;return&nbsp;number&nbsp;of&nbsp;occurrences&nbsp;of&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-extend"><strong>extend</strong></a>(...)</dt><dd><tt>L.<a href="#DocumentAnalysis-extend">extend</a>(iterable)&nbsp;--&nbsp;extend&nbsp;<a href="__builtin__.html#list">list</a>&nbsp;by&nbsp;appending&nbsp;elements&nbsp;from&nbsp;the&nbsp;iterable</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-index"><strong>index</strong></a>(...)</dt><dd><tt>L.<a href="#DocumentAnalysis-index">index</a>(value,&nbsp;[start,&nbsp;[stop]])&nbsp;-&gt;&nbsp;integer&nbsp;--&nbsp;return&nbsp;first&nbsp;index&nbsp;of&nbsp;value.<br>
+Raises&nbsp;ValueError&nbsp;if&nbsp;the&nbsp;value&nbsp;is&nbsp;not&nbsp;present.</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-insert"><strong>insert</strong></a>(...)</dt><dd><tt>L.<a href="#DocumentAnalysis-insert">insert</a>(index,&nbsp;object)&nbsp;--&nbsp;insert&nbsp;object&nbsp;before&nbsp;index</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-pop"><strong>pop</strong></a>(...)</dt><dd><tt>L.<a href="#DocumentAnalysis-pop">pop</a>([index])&nbsp;-&gt;&nbsp;item&nbsp;--&nbsp;remove&nbsp;and&nbsp;return&nbsp;item&nbsp;at&nbsp;index&nbsp;(default&nbsp;last).<br>
+Raises&nbsp;IndexError&nbsp;if&nbsp;<a href="__builtin__.html#list">list</a>&nbsp;is&nbsp;empty&nbsp;or&nbsp;index&nbsp;is&nbsp;out&nbsp;of&nbsp;range.</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-remove"><strong>remove</strong></a>(...)</dt><dd><tt>L.<a href="#DocumentAnalysis-remove">remove</a>(value)&nbsp;--&nbsp;remove&nbsp;first&nbsp;occurrence&nbsp;of&nbsp;value.<br>
+Raises&nbsp;ValueError&nbsp;if&nbsp;the&nbsp;value&nbsp;is&nbsp;not&nbsp;present.</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-reverse"><strong>reverse</strong></a>(...)</dt><dd><tt>L.<a href="#DocumentAnalysis-reverse">reverse</a>()&nbsp;--&nbsp;reverse&nbsp;*IN&nbsp;PLACE*</tt></dd></dl>
+
+<dl><dt><a name="DocumentAnalysis-sort"><strong>sort</strong></a>(...)</dt><dd><tt>L.<a href="#DocumentAnalysis-sort">sort</a>(cmp=None,&nbsp;key=None,&nbsp;reverse=False)&nbsp;--&nbsp;stable&nbsp;sort&nbsp;*IN&nbsp;PLACE*;<br>
+cmp(x,&nbsp;y)&nbsp;-&gt;&nbsp;-1,&nbsp;0,&nbsp;1</tt></dd></dl>
+
+<hr>
+Data and other attributes inherited from <a href="__builtin__.html#list">__builtin__.list</a>:<br>
+<dl><dt><strong>__hash__</strong> = None</dl>
+
+<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object&gt;<dd><tt>T.<a href="#DocumentAnalysis-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="TextDocument">class <strong>TextDocument</strong></a></font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="TextDocument-__init__"><strong>__init__</strong></a>(self, doc)</dt><dd><tt>#TODO&nbsp;migliorare&nbsp;la&nbsp;regex<br>
+#Costruttore,&nbsp;crea&nbsp;il&nbsp;dizionario&nbsp;delle&nbsp;parole&nbsp;di&nbsp;un&nbsp;testo,&nbsp;crea&nbsp;il&nbsp;dizionario&nbsp;delle&nbsp;occorrenze&nbsp;e&nbsp;delle&nbsp;frequenze</tt></dd></dl>
+
+<dl><dt><a name="TextDocument-contains"><strong>contains</strong></a>(self, word)</dt><dd><tt>#Se&nbsp;una&nbsp;parola&nbsp;e'&nbsp;presente&nbsp;nel&nbsp;testo</tt></dd></dl>
+
+<dl><dt><a name="TextDocument-getTF"><strong>getTF</strong></a>(self, word)</dt></dl>
+
+<dl><dt><a name="TextDocument-getVector"><strong>getVector</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="TextDocument-getfreqDict"><strong>getfreqDict</strong></a>(self)</dt><dd><tt>#Restituisce&nbsp;il&nbsp;dizionario&nbsp;delle&nbsp;frequenze</tt></dd></dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-cosineSimilarity"><strong>cosineSimilarity</strong></a>(setDoc1, setDoc2)</dt><dd><tt>#Calcola&nbsp;la&nbsp;CosSim&nbsp;a&nbsp;partire&nbsp;da&nbsp;due&nbsp;vettori&nbsp;di&nbsp;occorrenze&nbsp;di&nbsp;parole</tt></dd></dl>
+ <dl><dt><a name="-diceCoefficient"><strong>diceCoefficient</strong></a>(setDoc1, setDoc2)</dt><dd><tt>#Calcola&nbsp;la&nbsp;dice&nbsp;Coefficent&nbsp;a&nbsp;partire&nbsp;da&nbsp;due&nbsp;vettori&nbsp;di&nbsp;occorrenze&nbsp;di&nbsp;parole<br>
+#In&nbsp;sostanza&nbsp;sono&nbsp;i&nbsp;termini&nbsp;matchanti&nbsp;fra&nbsp;2&nbsp;documenti</tt></dd></dl>
+ <dl><dt><a name="-diceKgramCoefficient"><strong>diceKgramCoefficient</strong></a>(setDoc1, setDoc2, k, threshold)</dt></dl>
+ <dl><dt><a name="-exactWordInCommon"><strong>exactWordInCommon</strong></a>(setDoc1, setDoc2)</dt></dl>
+ <dl><dt><a name="-getkgrams"><strong>getkgrams</strong></a>(word, k)</dt></dl>
+ <dl><dt><a name="-kgramsimilarity"><strong>kgramsimilarity</strong></a>(setDoc1, setDoc2, k, threshold)</dt></dl>
+ <dl><dt><a name="-kgramswordssimilarity"><strong>kgramswordssimilarity</strong></a>(word1, word2, k)</dt></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>doc1</strong> = &lt;TFIDF.DocumentAnalysis.TextDocument instance&gt;<br>
+<strong>doc2</strong> = &lt;TFIDF.DocumentAnalysis.TextDocument instance&gt;<br>
+<strong>txt1</strong> = 'In questo caso scrivo un punto.E scrivo una nuova frase!'<br>
+<strong>txt2</strong> = 'In questi caso scriverei ma sarei fottuto.'</td></tr></table>
+</body></html>

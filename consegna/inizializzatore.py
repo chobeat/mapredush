@@ -8,23 +8,21 @@ from mongocv.outdocument import OutDocument
 from mongocv.querydocument import QueryDocument
 from mongocv.document import Document
 
+DB = MongoClient()["contestDB_E"]
 
-
-def connToDB(collection):
-	client=MongoClient()
-	db=client.contestDB_E
-	return db[collection]
 
 def initDB():
-	try:
-		db=connToDB("occurrences").database
-		init_IDF()
-	except CollectionInvalid:
-		pass
+    try:
+        DB["texts"].ensureIndex({"textid":1})
+        DB["texts"].ensureIndex({"timeline":1})
+        DB["occurrences"].ensureIndex({"textid":1})
+        DB["occurrences"].ensureIndex({"keyword":1})
+        init_IDF()
+    except CollectionInvalid:
+        pass
 
 def init_IDF():
 
-    DB=connToDB("occurrences").database
     DB.create_collection("wordIDF")
     coll = DB["occurrences"]
     den = DB["texts"].count()

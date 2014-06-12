@@ -43,8 +43,8 @@ def tweetid2words(tweetid):
     result = res["result"]
 
     if len(result)==0:
-	print "Tweet ID non valido"
-	return []
+        print "Tweet ID non valido"
+        return []
     words=result[0]["words"]
     return words
 
